@@ -2,10 +2,10 @@
   "name": "centralized-login",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://g1bbles.github.io/login/",
   "devDependencies": {
     "react-scripts": "0.9.5"
   },
-  "homepage": "https://g1bbles.github.io/login/"
   "dependencies": {
     "auth0-js": "^9.0.0",
     "bootstrap": "^3.3.7",
