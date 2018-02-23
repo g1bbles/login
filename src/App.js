@@ -23,7 +23,7 @@ class App extends Component {
         <Navbar fluid>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="#">Auth0 - React</a>
+              <a href="#">James React</a>
             </Navbar.Brand>
             <Button
               bsStyle="primary"
@@ -32,6 +32,13 @@ class App extends Component {
             >
               Home
             </Button>
+              <Button
+                  bsStyle="primary"
+                  className="btn-margin"
+                  onClick={this.goTo.bind(this, 'form')}
+              >
+                 Form
+              </Button>
             {
               !isAuthenticated() && (
                   <Button
@@ -56,6 +63,18 @@ class App extends Component {
                   </Button>
                 )
             }
+            {
+              isAuthenticated() && (
+                  <Button
+                      id="qsLogoutBtn"
+                      bsStyle="primary"
+                      className="btn-margin"
+                      onClick={this.logout.bind(this)}
+                  >
+                      Contact
+                  </Button>
+              )
+              }
           </Navbar.Header>
         </Navbar>
       </div>
