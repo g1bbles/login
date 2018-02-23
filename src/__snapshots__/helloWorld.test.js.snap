@@ -1,0 +1,6 @@
+exports[`test renders and matches our snapshot 1`] = `
+<div
+  className="HelloWorld">
+  Hello World!
+</div>
+`;

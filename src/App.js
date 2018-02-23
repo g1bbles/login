@@ -1,22 +1,52 @@
 import React, { Component } from 'react';
 import { Navbar, Button } from 'react-bootstrap';
 import './App.css';
+import { getUser } from './github';
+
+const renderLine = (user, key) => <li key={key}><b>{key}</b>: {user[key]}</li>
 
 class App extends Component {
-  goTo(route) {
-    this.props.history.replace(`/${route}`)
-  }
+    constructor (props) {
+        super(props);
+        this.state = { user: {} , value: ''};
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
 
-  login() {
-    this.props.auth.login();
-  }
+    componentDidMount () {
+        getUser('g1bbles').then(data => {
+            this.setState({ user: data.entity })
+        })
+    }
 
-  logout() {
-    this.props.auth.logout();
-  }
+    handleChange(event){
+        this.setState({value: event.target.value});
+    }
 
-  render() {
-    const { isAuthenticated } = this.props.auth;
+    handleSubmit(event){
+        alert('github user requested: ' + this.state.value);
+
+        console.log(this.state.value);
+        getUser(this.state.value).then(data => {
+            this.setState({ user: data.entity })
+        })
+    }
+
+    goTo(route) {
+        this.props.history.replace(`/${route}`)
+    }
+
+    login() {
+        this.props.auth.login();
+    }
+
+    logout() {
+        this.props.auth.logout();
+    }
+
+    render() {
+        const { user } = this.state;
+        const { isAuthenticated } = this.props.auth;
 
     return (
       <div>
@@ -29,15 +59,13 @@ class App extends Component {
               bsStyle="primary"
               className="btn-margin"
               onClick={this.goTo.bind(this, 'home')}
-            >
-              Home
+            >Home
             </Button>
               <Button
                   bsStyle="primary"
                   className="btn-margin"
                   onClick={this.goTo.bind(this, 'form')}
-              >
-                 Form
+              >Form
               </Button>
             {
               !isAuthenticated() && (
@@ -46,8 +74,7 @@ class App extends Component {
                     bsStyle="primary"
                     className="btn-margin"
                     onClick={this.login.bind(this)}
-                  >
-                    Log In
+                  >Log In
                   </Button>
                 )
             }
@@ -58,8 +85,7 @@ class App extends Component {
                     bsStyle="primary"
                     className="btn-margin"
                     onClick={this.logout.bind(this)}
-                  >
-                    Log Out
+                  >Log Out
                   </Button>
                 )
             }
@@ -70,13 +96,27 @@ class App extends Component {
                       bsStyle="primary"
                       className="btn-margin"
                       onClick={this.logout.bind(this)}
-                  >
-                      Contact
+                  >Contact
                   </Button>
               )
-              }
+            }
           </Navbar.Header>
         </Navbar>
+
+          <ul style={{ listStyle: 'none' }}>
+              {
+                  // Loop over the object keys and render each key
+                  Object.keys(user).map(key => renderLine(user, key))
+              }
+          </ul>
+
+          <form onSubmit={this.handleSubmit}>
+              <label>
+                  Name:
+                  <input type="text" value={this.state.value} onChange={this.handleChange} />
+              </label>
+              <input type="submit" value="Submit" />
+          </form>
       </div>
     );
   }
